@@ -32,3 +32,13 @@ if __name__ == '__main__':
         letters = input("What letters would you like to find the anagram of? ").strip().lower()
         for anagram in find_anagrams(letters, english_words_small):
             print(anagram)
+
+
+#Alternate Solution:
+# from collections import defaultdict
+#
+# def find_anagrams(letters, words):
+#     lookup = defaultdict(set, {})  # Create a dictionary subclass that adds sets for missing values.
+#     for word in words:
+#         lookup[''.join(sorted(word))].add(word)
+#     return lookup.get(''.join(sorted(letters)), set())
