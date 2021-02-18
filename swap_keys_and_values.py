@@ -8,6 +8,7 @@ def swap_keys_and_values(d):
             c[value].add(key)
     return c
 
-
 d = {'a': 1, 'b': 2, 'c': 2, 'd': 3}
-print(swap_keys_and_values(d))
+
+if __name__ == '__main__':
+    print(swap_keys_and_values(d))
