@@ -33,3 +33,12 @@ def parse_content(content):
     return dict
 
 print(parse_content(word_frequency_content))
+
+
+
+# def parse_content(content):
+#     words = {}
+#     for line in content.split('\n'):
+#         word, frequency = line.split()
+#         words[word] = int(frequency)
+#     return words
