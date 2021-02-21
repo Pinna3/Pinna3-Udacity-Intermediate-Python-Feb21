@@ -9,6 +9,7 @@
 
 a = map(len, ["apple", "orange", "pear"])
 b = map(lambda str: str.upper(), ["apple", "orange", "pear"])
+# b = map(str.upper, ["apple", "orange", "pear"]) instructor solution (str.upper new syntax for me)
 c = map(lambda str: str[::-1], ["apple", "orange", "pear"])
 d = map(lambda str: str[0:2], ["apple", "orange", "pear"])
 
