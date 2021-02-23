@@ -1,7 +1,7 @@
 def generate_tribonacci_numbers():
     a, b, c = 0, 0, 1
-    while True:
-        a, b, c = b, b + c, a + b + c
+    while True: #1, 2, 4, 7, 13, 24, 44, 81
+        a, b, c = b, c, a + b + c
         yield a
 
 # def is_tribonacci(num):
@@ -10,13 +10,3 @@ def generate_tribonacci_numbers():
 #     return False
 
 a = generate_tribonacci_numbers()
-
-print(next(a))
-print(next(a))
-print(next(a))
-print(next(a))
-print(next(a))
-print(next(a))
-print(next(a))
-print(next(a))
-print(next(a))
