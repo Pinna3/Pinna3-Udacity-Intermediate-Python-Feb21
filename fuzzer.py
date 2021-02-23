@@ -17,3 +17,10 @@ if __name__ == '__main__':
         if len(case) > 10:
             break
         print(case)
+
+# Instructor's mopre elegent solution
+# def generate_cases():
+#     size = 0
+#     while True:
+#         yield helper.random_list(size)
+#         size += 1
