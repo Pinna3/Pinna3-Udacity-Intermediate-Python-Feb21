@@ -12,5 +12,6 @@ def is_tribonacci(num):
         elif trib > num:
             return False
 
-print(is_tribonacci(24))
-print(is_tribonacci(25))
+if __name__ == '__main__':
+    print(is_tribonacci(24))
+    print(is_tribonacci(25))
