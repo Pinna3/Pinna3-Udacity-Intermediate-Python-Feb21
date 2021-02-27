@@ -46,6 +46,7 @@ if __name__ == '__main__':
     print(long_operation(1, 10))
     print(long_operation(1, 10))
     print(long_operation(1, 10))
+    print(long_operation._cache)
 
 
 
