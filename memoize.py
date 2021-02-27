@@ -35,20 +35,25 @@ def fib(n):
     return fib(n-1) + fib(n-2)
 
 
+# if __name__ == '__main__':
+#     print(long_operation(2, 10))
+#     print(long_operation(2, 10))
+#     print(long_operation(2, 11))
+#     print(long_operation(2, 11))
+#     print(long_operation(2, 11))
+#     print(long_operation(2, 11))
+#     print(long_operation(1, 10))
+#     print(long_operation(1, 10))
+#     print(long_operation(1, 10))
+#     print(long_operation(1, 10))
+#     print(long_operation._cache)
+
 if __name__ == '__main__':
-    print(long_operation(2, 10))
-    print(long_operation(2, 10))
-    print(long_operation(2, 11))
-    print(long_operation(2, 11))
-    print(long_operation(2, 11))
-    print(long_operation(2, 11))
-    print(long_operation(1, 10))
-    print(long_operation(1, 10))
-    print(long_operation(1, 10))
-    print(long_operation(1, 10))
-    print(long_operation._cache)
-
-
+    print(fib(25))
+    print(fib(50))
+    print(fib(75))
+    print(fib(100))
+    print(fib._cache)
 
 #####################################################  Reference
 
