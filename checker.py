@@ -4,6 +4,7 @@ import inspect
 def bind_args(function, *args, **kwargs):
     return inspect.signature(function).bind(*args, **kwargs).arguments
 
+# My Solution... (I'm scared to see how many less lines of code it took the instructor)
 def check_types(severity=1):
     def checker(function):
         if severity == 0:
@@ -11,7 +12,6 @@ def check_types(severity=1):
             def wrapper(*args, **kwargs):
                 return function(*args, **kwargs)
             return wrapper
-
         elif severity == 1:
             @functools.wraps(function)
             def wrapper(*args, **kwargs):
@@ -36,7 +36,6 @@ def check_types(severity=1):
                     if param_dict['return'] != annotations['return']:
                         print(f'''Error: Return value is of the wrong type.''')
             return wrapper
-
         elif severity == 2:
             @functools.wraps(function)
             def wrapper(*args, **kwargs):
