@@ -1,12 +1,12 @@
 import functools
-# import inspect
+import inspect
 
 # My solution ASSISTED...
 def check_types(severity=1):
     if severity == 0:
         return lambda function: function
 
-    def print_msg(msg):
+    def message(msg):
         if severity == 1:
             print(msg)
         elif severity == 2:
@@ -32,24 +32,11 @@ def check_types(severity=1):
                         compare.append(side_by_side)
                     for item in range(len(compare)-1):
                         if compare[item][0] is not compare[item][1]:
-                            print_msg(f'''Error: Parameter #{item+1} is of the wrong type.''')
+                            message(f'''Error: Parameter #{item+1} should be {compare[item][1]}.''')
                     if param_dict['return'] != annotations['return']:
-                        print_msg(f'''Error: Return value is of the wrong type.''')
+                        message(f'''Error: Return value should be {annotations['return']}.''')
             return wrapper
     return checker
-
-@check_types(severity=1)
-def foo(a: int, b: str) -> bool:
-    return b[a] == str(0)
-
-if __name__ == '__main__':
-    foo(a=1, b=[1,0,1,1])
-    # print(foo.__annotations__) # => {'a': int, 'b': str, 'return': bool}
-    # print(bind_args(foo, 1, '1011'))
-    # print(bind_args(foo, 1, 1))
-
-
-
 
 
 # # My solution UNASSISTED (WONKY BUT WORKING)
@@ -141,3 +128,14 @@ if __name__ == '__main__':
 #             return retval
 #         return wrapper
 #     return checker
+
+
+@check_types(severity=1)
+def foo(a: int, b: str) -> bool:
+    return b[a] == str(0)
+
+if __name__ == '__main__':
+    foo(a=1, b=[1,0,1,1])
+    # print(foo.__annotations__) # => {'a': int, 'b': str, 'return': bool}
+    # print(bind_args(foo, 1, '1011'))
+    # print(bind_args(foo, 1, 1))
