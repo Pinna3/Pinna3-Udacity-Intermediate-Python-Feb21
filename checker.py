@@ -16,6 +16,8 @@ def check_types(severity=1):
             @functools.wraps(function)
             def wrapper(*args, **kwargs):
                 annotations = function.__annotations__
+                if not annotations:
+                    return function
                 param_dict = {}
                 for key in args:
                     param_dict[key] = type(key)
@@ -134,7 +136,12 @@ def check_types(severity=1):
 def foo(a: int, b: str) -> bool:
     return b[a] == str(0)
 
+@check_types()
+def foo2():
+    return 2 * 3
+
 if __name__ == '__main__':
+    foo2()
     foo(a=1, b=[1,0,1,1])
     # print(foo.__annotations__) # => {'a': int, 'b': str, 'return': bool}
     # print(bind_args(foo, 1, '1011'))
