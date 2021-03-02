@@ -1,7 +1,7 @@
 class Dog:
     def __init__(self, name, tricks=set()):
         self.name = name
-        self.tricks = tricks
+        self.tricks = set()
     def teach(self, trick):
         self.tricks.add(trick)
 
