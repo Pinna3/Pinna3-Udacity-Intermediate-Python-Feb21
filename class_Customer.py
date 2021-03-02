@@ -28,3 +28,29 @@ if __name__ == '__main__':
     print(victoria.can_access({'tier': 'premium', 'title': 'William Tell Overture'}))  # True
     print(victoria.bill_for(5))  # => 50 (5 months at 10$/mo)
     print(victoria.name)  # Alexandrina Victoria
+
+
+
+
+
+# # Instructor's method
+# class Customer:
+#     def __init__(self, first_name, surname, tier=('free', 0)):
+#         self.first_name = first_name
+#         self.surname = surname
+#         self._tier = tier[0]
+#         self._cost = tier[1]
+#
+#     def bill_for(self, months):
+#         return months * self._cost
+#
+#     def can_access(self, content):
+#         return content['tier'] == 'free' or content['tier'] == self._tier
+#
+#     @property
+#     def name(self):
+#         return f"{self.first_name} {self.surname}"
+#
+#     @classmethod
+#     def premium(cls, first_name, last_name):
+#         return cls(first_name, last_name, tier=('premium', 10))
