@@ -1,14 +1,14 @@
 class Dog:
     def __init__(self, name, tricks=set()):
         self.name = name
-        self.tricks = set()
+        self.tricks = tricks
     def teach(self, trick):
         self.tricks.add(trick)
 
 # Change the broken code above so that the following lines work:
 if __name__ == '__main__':
-    buddy = Dog('Buddy')
-    pascal = Dog('Pascal')
+    buddy = Dog('Buddy', tricks=set())
+    pascal = Dog('Pascal', tricks=set())
     kimber = Dog('Kimber', tricks={'lie down', 'shake'})
     buddy.teach('sit')
     pascal.teach('fetch')
