@@ -7,7 +7,12 @@ class Point:
         a, b = self.xy
         c, d = other.xy
         return Point(a + c, b + d)
-
+    #further experimentation
+    def __iadd__(self, other):
+        a, b = self.xy
+        d, c = other.xy
+        self.xy = (a + d, b + c)
+        return self
 
 
 if __name__ == '__main__':
