@@ -8,10 +8,10 @@ class PasswordError(ValueError):
     pass
 
 def validate_password(username, password):
-    if password != username and password not in INVALID_PASSWORDS:
-        return True
-    else:
-        raise ValueError
+    if password == username:
+        raise PasswordError('Password cannot be same as username.')
+    if password in INVALID_PASSWORDS:
+        raise PasswordError('Password must be harder.')
 
 
 def create_account(username, password):
@@ -21,10 +21,12 @@ def create_account(username, password):
 def main(username, password):
     try:
         valid = validate_password(username, password)
-    except ValueError:
-        raise PasswordError('Pick another password.')
+    except PasswordError as err:
+        print(err)
     else:
         account = create_account(username, password)
+    finally:
+        print('Validated password against username and collection.')
 
 
 if __name__ == '__main__':
