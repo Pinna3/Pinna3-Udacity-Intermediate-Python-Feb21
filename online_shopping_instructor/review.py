@@ -4,4 +4,5 @@ class Review:
         self.user = user
         self.product = product
 
-        
+    def __str__(self):
+        return f'Review pf {self.product} by {self.user}: "{self.content}"'
