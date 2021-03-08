@@ -10,16 +10,31 @@ def read_airlines(filename='airlines.dat'):
         for line in reader:
             airlines[line[4]] = line[1]
     return airlines
+#{'GNL': '135 Airways', 'RNX': '1Time Airline', ...}
 
 
 def read_airports(filename='airports.dat'):
     # Return a map of code -> name
-    return {}
+    airports = {}
+    with open(filename) as f:
+        reader = csv.reader(f)
+        for line in reader:
+            airports[line[4]] = line[1]
+    return airports
+# {'CGY': 'Laguindingan Airport', 'CPO': 'Desierto de Atacama Airport'}
 
 
 def read_routes(filename='routes.dat'):
     # Return a map from source -> list of destinations
-    return {}
+    routes = {}
+    with open(filename) as f:
+        reader = csv.reader(f)
+        print(reader)
+        for line in reader:
+            print(line)
+#     return {}
+read_routes() # routes.dat file contains incofrect info... this is an error in
+# Udacity's filesystem that makes it impossible to complete project, moving on disgruntled.
 
 
 def find_paths(routes, source, dest, max_segments):
