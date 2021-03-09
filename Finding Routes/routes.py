@@ -80,7 +80,7 @@ def main(source, dest, max_segments):
 
     with open(f'{source}->{dest} (max {max_segments}).json', 'w') as f:
         json.dump(output, f, indent=2, sort_keys=True)
-        
+
 
 if __name__ == '__main__':
     parser = helper.build_parser()
