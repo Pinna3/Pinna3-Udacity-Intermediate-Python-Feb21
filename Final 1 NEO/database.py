@@ -94,11 +94,6 @@ class NEODatabase:
                     if approach._designation == neo.designation:
                         approach.neo = neo
                         neo.approaches.append(approach)
-#                 none_neo = 0
-#                 for approach in self._approaches:
-#                     if approach.neo is None:
-#                         none_neo += 1
-#                 print(none_neo)
                 return neo
         return None
 
@@ -140,21 +135,32 @@ print(len(set_desig))
 # ['100004', '100004', '100004', '100004', '100004', '100004', '100004', '100004', '100004', '100004']
 # 406785
 
+mapping = {}
 for pdes in set_desig:
+    for neo in d._neos:
+        if neo.designation == pdes:
+            mapping[pdes] = [neo]
 
+# print(list(mapping.values())[0:10])
+# # ['2017 RR15', '2012 YO1', '2019 LU1', '2018 BO5', '402267', '2019 XO2', '2019 QU2', '480883', '2009 UA', '2016 EU28']
 
+for approach in d._approaches:
+    mapping[approach._designation].append(approach)
 
+# print(list(mapping.keys())[0:10])
+# print(list(mapping.values())[0:10])
 
+for val in mapping.values():
+    for obj in val[1:]:
+        obj.neo = val[0]
 
+# print(mapping['10115'])
+# print('')
+# print('')
+# print(mapping['101869'])
 
+for val in mapping.values():
+    for obj in val[1:]:
+        val[0].approaches.append(obj)
 
-# eros = d.get_neo_by_name('Eros')
-# # deros = d.get_neo_by_designation('433')
-
-# # print(eros.approaches[0].velocity)
-# print(len(eros.approaches))
-# # print(deros)
-# # print(eros)
-
-# # for approach in eros.approaches:
-# #     print(approach.velocity)
+print(mapping['10115'][0].__dict__)
