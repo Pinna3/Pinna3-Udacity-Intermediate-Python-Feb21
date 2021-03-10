@@ -17,18 +17,6 @@ You'll edit this file in Tasks 2 and 3.
 """
 
 
-
-def memoize(function):
-    function._cache = {}
-    @functools.wraps(function)
-    def wrapper(*args, **kwargs):
-        key = (args, tuple(kwargs.items()))
-        if key not in function._cache:
-            function._cache[key] = function(*args, **kwargs)
-        return function._cache[key]
-    return wrapper
-
-
 class NEODatabase:
     """A database of near-Earth objects and their close approaches.
 
@@ -38,7 +26,6 @@ class NEODatabase:
     querying for close approaches that match criteria.
     """
 
-    @memoize
     def __init__(self, neos, approaches):
         """Create a new `NEODatabase`.
 
@@ -60,19 +47,8 @@ class NEODatabase:
         self._neos = neos
         self._approaches = approaches
 
+
         # TODO: What additional auxiliary data structures will be useful?
-
-#         for approach in self._approaches:
-#             for neo in self._neos:
-#                 if approach._designation != neo.designation:
-#                     continue
-#                     if approach not in neo.approaches:
-#                         neo.approaches.append(approach)
-
-#         for neo in self._neos:
-#             for approach in self._approaches:
-#                 if approach.neo == neo:
-#                     neo.approaches.append(approach)
 
 
     def get_neo_by_designation(self, designation):
@@ -89,13 +65,14 @@ class NEODatabase:
         :return: The `NearEarthObject` with the desired primary designation, or `None`.
         """
         for neo in self._neos:
-#             if neo.designation != 'pdes':
-#                 print(type(neo.designation))
-#                 break
-            if neo.designation == designation:
-                return NearEarthObject(neo.designation, neo.name, neo.diameter, neo.hazardous)
-            else:
-                return None
+            if neo.designation == designation.strip():
+                for approach in self._approaches:
+                    if approach._designation == designation.strip():
+                        approach.neo = neo
+                        neo.approaches.append(approach)
+                return neo
+        return None
+
 
     def get_neo_by_name(self, name):
         """Find and return an NEO by its name.
@@ -112,12 +89,18 @@ class NEODatabase:
         :return: The `NearEarthObject` with the desired name, or `None`.
         """
         for neo in self._neos:
-#             print(neo.name)
-#             break
-            if neo.name.lower() == name.lower():
-                return NearEarthObject(neo.designation, neo.name, neo.diameter, neo.hazardous)
-            else:
-                return None
+            if name != '' and name != None and neo.name == name:
+                for approach in self._approaches:
+                    if approach._designation == neo.designation:
+                        approach.neo = neo
+                        neo.approaches.append(approach)
+#                 none_neo = 0
+#                 for approach in self._approaches:
+#                     if approach.neo is None:
+#                         none_neo += 1
+#                 print(none_neo)
+                return neo
+        return None
 
     def query(self, filters=()):
         """Query close approaches to generate those that match a collection of filters.
@@ -137,37 +120,41 @@ class NEODatabase:
         for approach in self._approaches:
             yield approach
 
-@memoize
+
+
 def load():
     database = NEODatabase(load_neos(), load_approaches())
     return database
-
 d = NEODatabase(load_neos(), load_approaches())
-eros = d.get_neo_by_name('Eros')
-deros = d.get_neo_by_designation('433')
 
-print(eros.name)
-print(deros.name)
+a = d._approaches #406785
+set_desig = set()
+for approach in a:
+    set_desig.add(approach._designation)
+print(sorted(set_desig)[0:10])
+print(len(set_desig))
+#set:
+# ['100004', '100085', '100756', '100926', '10115', '10145', '10150', '10165', '101869', '101873']
+# 23424
+#list:
+# ['100004', '100004', '100004', '100004', '100004', '100004', '100004', '100004', '100004', '100004']
+# 406785
 
-# neo = list(d._neos)[1]
-# app = list(d._approaches)[1]
-
-# print(neo.__dict__)
-# print(app.__dict__)
+for pdes in set_desig:
 
 
-# neo.approaches.append('I think I fucking figured it out!')
-# app.neo = 'I did fucking figure it out!'
 
-# print(neo.approaches)
-# print(app.neo)
 
-# for approach in d._approaches:
-#         if approach._designation == '433':
-#             neo.approaches.append(approach)
 
-# print(neo.approaches)
-# neo1 = neo.approaches[1]
-# print(neo1.velocity)
-# # for neo in neo.approaches:
-# #     print(neo.time)
+
+
+# eros = d.get_neo_by_name('Eros')
+# # deros = d.get_neo_by_designation('433')
+
+# # print(eros.approaches[0].velocity)
+# print(len(eros.approaches))
+# # print(deros)
+# # print(eros)
+
+# # for approach in eros.approaches:
+# #     print(approach.velocity)
