@@ -44,11 +44,49 @@ class NEODatabase:
         :param neos: A collection of `NearEarthObject`s.
         :param approaches: A collection of `CloseApproach`es.
         """
-        self._neos = neos
-        self._approaches = approaches
 
 
-        # TODO: What additional auxiliary data structures will be useful?
+        neo_desig = set()
+        for neo in neos:
+            if neo.designation != 'pdes':
+                neo_desig.add(neo.designation)
+
+        mapping = {}
+        for pdes in neo_desig:
+            if pdes[-1] not in mapping.keys():
+                mapping[pdes[-1]] = [pdes]
+            else:
+                mapping[pdes[-1]].append(pdes)
+        print(mapping.keys())
+
+#         mapping = {}
+#         for pdes in neo_desig:
+#             for neo in neos:
+#                 if neo.designation == pdes:
+#                     mapping[pdes] = [neo]
+
+#         for approach in approaches:
+#             mapping[approach._designation].append(approach)
+
+#         for val in mapping.values():
+#             for obj in val[1:]:
+#                 obj.neo = val[0]
+
+#         for val in mapping.values():
+#             for obj in val[1:]:
+#                 val[0].approaches.append(obj)
+
+#         manip_neos = []
+#         for val in mapping.values():
+#             manip_neos.append(val[0])
+
+#         manip_approaches = []
+#         for val in mapping.values():
+#             for obj in val[1:]:
+#                 manip_approaches.append(obj)
+
+#         self._neos = tuple(manip_neos)
+#         self._approaches = tuple(manip_approaches)
 
 
     def get_neo_by_designation(self, designation):
@@ -115,52 +153,4 @@ class NEODatabase:
         for approach in self._approaches:
             yield approach
 
-
-
-def load():
-    database = NEODatabase(load_neos(), load_approaches())
-    return database
 d = NEODatabase(load_neos(), load_approaches())
-
-a = d._approaches #406785
-set_desig = set()
-for approach in a:
-    set_desig.add(approach._designation)
-print(sorted(set_desig)[0:10])
-print(len(set_desig))
-#set:
-# ['100004', '100085', '100756', '100926', '10115', '10145', '10150', '10165', '101869', '101873']
-# 23424
-#list:
-# ['100004', '100004', '100004', '100004', '100004', '100004', '100004', '100004', '100004', '100004']
-# 406785
-
-mapping = {}
-for pdes in set_desig:
-    for neo in d._neos:
-        if neo.designation == pdes:
-            mapping[pdes] = [neo]
-
-# print(list(mapping.values())[0:10])
-# # ['2017 RR15', '2012 YO1', '2019 LU1', '2018 BO5', '402267', '2019 XO2', '2019 QU2', '480883', '2009 UA', '2016 EU28']
-
-for approach in d._approaches:
-    mapping[approach._designation].append(approach)
-
-# print(list(mapping.keys())[0:10])
-# print(list(mapping.values())[0:10])
-
-for val in mapping.values():
-    for obj in val[1:]:
-        obj.neo = val[0]
-
-# print(mapping['10115'])
-# print('')
-# print('')
-# print(mapping['101869'])
-
-for val in mapping.values():
-    for obj in val[1:]:
-        val[0].approaches.append(obj)
-
-print(mapping['10115'][0].__dict__)
