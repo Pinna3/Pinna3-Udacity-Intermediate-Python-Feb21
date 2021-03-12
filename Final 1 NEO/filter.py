@@ -107,38 +107,45 @@ def create_filters(date=None, start_date=None, end_date=None,
     :return: A collection of filters for use with `query`.
     """
 
+    collection = set()
+
     #distance
     distance_min = distance_min
     distance_max = distance_max
-    distance_collection = set()
+
+    #velocity
+    velocity_min = velocity_min
+    velocity_max = velocity_max
+
     for approach in NEODatabase(load_neos(), load_approaches())._approaches:
-        if distance_min is None:
+        #distance
+        if distance_min is None and distance_max is None:
+            collection.add(approach)
+        elif distance_min is None and distance_max is not None:
             if approach.distance <= distance_max:
-                distance_collection.add(approach)
-        elif distance_max is None:
+                collection.add(approach)
+        elif distance_min is not None and distance_max is None:
             if approach.distance >= distance_min:
-                distance_collection.add(approach)
-        elif approach.distance >= distance_min and approach.distance <= distance_max:
-            distance_collection.add(approach)
-        else:
-            distance_collection.add(approach)
+                collection.add(approach)
+        elif distance_min is not None and distance_max is not None:
+            if approach.distance >= distance_min and approach.distance <= distance_max:
+                collection.add(approach)
 
-#     #velocity
-#     velocity_min = velocity_min
-#     velocity_max = velocity_max
-#     velocity_collection = set()
-#     for approach in NEODatabase(load_neos(), load_approaches())._approaches:
-#         if velocity_min is None:
-#             if approach.velocity <= velocity_max:
-#                 velocity_collection.add(approach)
-#         elif velocity_max is None:
-#             if approach.velocity >= velocity_min:
-#                 velocity_collection.add(approach)
-#         else:
-#             if approach.velocity >= velocity_min and approach.velocity <= velocity_max:
-#                 velocity_collection.add(approach)
+    for approach in collection:
+        #velocity
+        if velocity_min is None and velocity_max is None:
+            collection.add(approach)
+        elif velocity_min is None and velocity_max is not None:
+            if approach.velocity <= velocity_max:
+                collection.add(approach)
+        elif velocity_min is not None and velocity_max is None:
+            if approach.velocity >= velocity_min:
+                collection.add(approach)
+        elif velocity_min is not None and velocity_max is not None:
+            if approach.velocity >= velocity_min and approach.velocity <= velocity_max:
+                collection.add(approach)
 
-    return (distance_collection) #velocity_collection)
+    return (collection)
 
 
 def limit(iterator, n=None):
@@ -153,4 +160,5 @@ def limit(iterator, n=None):
     # TODO: Produce at most `n` values from the given iterator.
     return iterator
 
-print(len(list(create_filters(distance_min=None, distance_max=None))))
+print(len(create_filters(velocity_min=None, velocity_max=None, distance_min=.2, distance_max=.3,)))
+# print(len(NEODatabase(load_neos(), load_approaches())._approaches))
