@@ -48,70 +48,27 @@ class NEODatabase:
 
         desig_map = {}
         for neo in neos:
-            if neo.designation != 'pdes':
-                if neo.designation[-3:] not in desig_map.keys():
-                    desig_map[neo.designation[-3:]] = [neo]
-                else:
-                    desig_map[neo.designation[-3:]].append(neo)
+            if neo.designation not in desig_map.keys():
+                desig_map[neo.designation] = [neo]
+            else:
+                desig_map[neo.designation].append(neo)
 
-        errors = []
         for approach in approaches:
-                for obj in desig_map[approach._designation[-3:]]:
-#                     print(obj.designation)
-#                     print(approach._designation)
-                    if obj.designation != approach._designation:
-                        continue
-                    approach.__dict__['neo'] = obj
-                    obj.__dict__['approaches'].append(approach)
-
-#                     else:
-#                         errors.append(approach)
-
-#         print(len(errors))
-#         print(errors[5])
-
-
-        print(list(desig_map.keys())[-10])
-        print('')
-        print(desig_map['484'][0].approaches)
-        print('')
-
-
-
-#         print(list(desig_map.values())[-1:][0][0]['210P']='hello!!!')
-#         print('')
-
-
-#             desig_map[approach._designation].append(approach)
-
-#         for val in mapping.values():
-#             for obj in val[1:]:
-#                 obj.neo = val[0]
-
-#         for val in mapping.values():
-#             for obj in val[1:]:
-#                 val[0].approaches.append(obj)
+            for obj in desig_map[approach._designation]:
+                if obj.designation != approach._designation:
+                    continue
+                approach.__dict__['neo'] = obj
+                obj.__dict__['approaches'].append(approach)
 
         manip_neos = []
         for val in desig_map.values():
             for item in val:
                 manip_neos.append(item)
 
-
-#         print(manip_neos[5])
-#         print(len(manip_neos))
-#         print(len(neos))
-
-
         manip_approaches = []
         for item in manip_neos:
             for obj in item.approaches:
-                manip_approaches.append(item)
-
-#         print(manip_approaches[5])
-#         print(len(manip_approaches))
-#         print(len(approaches))
-
+                manip_approaches.append(obj)
 
         self._neos = tuple(manip_neos)
         self._approaches = tuple(manip_approaches)
@@ -132,10 +89,6 @@ class NEODatabase:
         """
         for neo in self._neos:
             if neo.designation == designation.strip():
-                for approach in self._approaches:
-                    if approach._designation == designation.strip():
-                        approach.neo = neo
-                        neo.approaches.append(approach)
                 return neo
         return None
 
@@ -156,10 +109,6 @@ class NEODatabase:
         """
         for neo in self._neos:
             if name != '' and name != None and neo.name == name:
-                for approach in self._approaches:
-                    if approach._designation == neo.designation:
-                        approach.neo = neo
-                        neo.approaches.append(approach)
                 return neo
         return None
 
@@ -181,4 +130,7 @@ class NEODatabase:
         for approach in self._approaches:
             yield approach
 
-d = NEODatabase(load_neos(), load_approaches())
+# print(list(NEODatabase(load_neos(), load_approaches())._approaches)[123987])
+# # print('Database generated.')
+# # print(d.get_neo_by_name('Eros'))
+# # print(d.get_neo_by_designation('433'))
