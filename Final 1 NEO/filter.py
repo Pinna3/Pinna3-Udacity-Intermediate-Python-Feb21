@@ -18,6 +18,7 @@ You'll edit this file in Tasks 3a and 3c.
 """
 import operator
 from database import*
+import datetime
 
 class UnsupportedCriterionError(NotImplementedError):
     """A filter criterion is unsupported."""
@@ -108,6 +109,11 @@ def create_filters(date=None, start_date=None, end_date=None,
     """
 
     collection = set()
+    collection2 = set()
+    collection3 = set()
+    collection4 = set()
+    collection5 = set()
+    collection6 = set()
 
     #distance
     distance_min = distance_min
@@ -117,8 +123,25 @@ def create_filters(date=None, start_date=None, end_date=None,
     velocity_min = velocity_min
     velocity_max = velocity_max
 
+    #diameter
+    diameter_min = diameter_min
+    diameter_max = diameter_max
+
+    #hazardous
+    hazardous = hazardous
+
+    #date
+    date = date
+
+    #date_range
+    start_date = start_date
+    end_date = end_date
+
+
+
+
+    #distance
     for approach in NEODatabase(load_neos(), load_approaches())._approaches:
-        #distance
         if distance_min is None and distance_max is None:
             collection.add(approach)
         elif distance_min is None and distance_max is not None:
@@ -131,21 +154,78 @@ def create_filters(date=None, start_date=None, end_date=None,
             if approach.distance >= distance_min and approach.distance <= distance_max:
                 collection.add(approach)
 
+    #velocity
     for approach in collection:
-        #velocity
         if velocity_min is None and velocity_max is None:
-            collection.add(approach)
+            collection2.add(approach)
         elif velocity_min is None and velocity_max is not None:
             if approach.velocity <= velocity_max:
-                collection.add(approach)
+                collection2.add(approach)
         elif velocity_min is not None and velocity_max is None:
             if approach.velocity >= velocity_min:
-                collection.add(approach)
+                collection2.add(approach)
         elif velocity_min is not None and velocity_max is not None:
             if approach.velocity >= velocity_min and approach.velocity <= velocity_max:
-                collection.add(approach)
+                collection2.add(approach)
 
-    return (collection)
+    #diameter
+    for approach in collection2:
+        if diameter_min is None and diameter_max is None:
+            collection3.add(approach)
+        elif diameter_min is None and diameter_max is not None:
+            if str(approach.neo.diameter) != 'nan' and approach.neo.diameter <= diameter_max:
+                collection3.add(approach)
+        elif diameter_min is not None and diameter_max is None:
+            if str(approach.neo.diameter) != 'nan' and approach.neo.diameter >= diameter_min:
+                collection3.add(approach)
+        elif diameter_min is not None and diameter_max is not None:
+            if str(approach.neo.diameter) != 'nan' and approach.neo.diameter >= diameter_min and approach.neo.diameter <= diameter_max:
+                collection3.add(approach)
+
+    #date_range
+    for approach in collection3:
+        if start_date is None and end_date is None:
+            collection4.add(approach)
+        elif start_date is None and end_date is not None:
+            if approach.time.date() <= end_date:
+                collection4.add(approach)
+        elif start_date is not None and end_date is None:
+            if approach.time.date() >= start_date:
+                collection4.add(approach)
+        elif start_date is not None and end_date is not None:
+            if approach.time.date() >= start_date and approach.time.date() <= end_date:
+                collection4.add(approach)
+
+    #hazardous
+    for approach in collection4:
+        if hazardous is None:
+            collection5.add(approach)
+        elif hazardous is True:
+            if approach.neo.hazardous is True:
+                collection5.add(approach)
+        else:
+            if approach.neo.hazardous is False:
+                collection5.add(approach)
+
+    #date
+    for appproach in collection5:
+        if date is None:
+            collection6.add(approach)
+        else:
+            if date == approach.time.date:
+                collection6.add(approach)
+#figure why this filtering all but 1
+
+
+    return (collection6)
+
+
+
+
+print(list(create_filters(velocity_min=4, velocity_max=6, distance_min=None, distance_max=.6, diameter_min=None, diameter_max=.5, hazardous=None,))[0])
+print(list(create_filters(velocity_min=4, velocity_max=6, distance_min=None, distance_max=.6, diameter_min=None, diameter_max=.5, hazardous=None,))[0])
+# # print(len(NEODatabase(load_neos(), load_approaches())._approaches))
+#  start_date=datetime.date(1975, 1, 1), end_date=datetime.date(2000, 1, 1)
 
 
 def limit(iterator, n=None):
@@ -159,6 +239,3 @@ def limit(iterator, n=None):
     """
     # TODO: Produce at most `n` values from the given iterator.
     return iterator
-
-print(len(create_filters(velocity_min=None, velocity_max=None, distance_min=.2, distance_max=.3,)))
-# print(len(NEODatabase(load_neos(), load_approaches())._approaches))
