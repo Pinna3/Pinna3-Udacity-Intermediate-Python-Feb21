@@ -113,7 +113,7 @@ def create_filters(date=None, start_date=None, end_date=None,
     collection3 = set()
     collection4 = set()
     collection5 = set()
-    collection6 = []
+    collection6 = set()
 
     #distance
     distance_min = distance_min
@@ -136,8 +136,6 @@ def create_filters(date=None, start_date=None, end_date=None,
     #date_range
     start_date = start_date
     end_date = end_date
-
-
 
 
     #distance
@@ -208,25 +206,16 @@ def create_filters(date=None, start_date=None, end_date=None,
                 collection5.add(approach)
 
     #date
-    for appproach in collection5:
+    for approach in collection5:
         if date is None:
-            collection6.append(approach)
+            collection6.add(approach)
         else:
             if date == approach.time.date():
                 collection6.add(approach)
 
-#figure why this is working as a lis but not as a set
-
-
     return collection6
 
-
-
-
-print(len(list(create_filters(velocity_min=None, velocity_max=None, distance_min=None, distance_max=None, diameter_min=None, diameter_max=None, hazardous=None, date=datetime.date(2020, 1, 1)))))
-# print(list(create_filters(velocity_min=4, velocity_max=6, distance_min=None, distance_max=.6, diameter_min=None, diameter_max=.5, hazardous=None,))[0])
-# # print(len(NEODatabase(load_neos(), load_approaches())._approaches))
-#  start_date=datetime.date(1975, 1, 1), end_date=datetime.date(2000, 1, 1)
+# print(list(create_filters(velocity_min=.01, velocity_max=100, distance_min=.05, distance_max=.3, diameter_min=.2, diameter_max=.4, hazardous=True, date=None, start_date=datetime.date(1988, 11, 6), end_date=datetime.date(1988, 12, 6)))[1])
 
 
 def limit(iterator, n=None):
